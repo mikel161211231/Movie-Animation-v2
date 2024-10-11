@@ -40,6 +40,8 @@ function App(): React.JSX.Element {
             data={movies} 
             keyExtractor={item => item.key}
             horizontal
+            snapToInterval={CONSTANTS.ITEM_SIZE}
+            decelerationRate={0}
             contentContainerStyle={{
               alignItems: 'center'
             }}
