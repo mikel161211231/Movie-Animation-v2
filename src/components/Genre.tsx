@@ -1,11 +1,11 @@
 import React from 'react'
 import styled from 'styled-components/native'
-
+import { Text, View } from 'react-native';
 
 
 // Los style components para usar en el componente
 const Container = styled.View`
-    flex -direction: row;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;`;
 
@@ -15,7 +15,7 @@ const GenreContainer = styled.View`
     margin: 0 2px 2px 0;
     padding: 3px`;
 
-const Text = styled.View`
+const GenreText = styled.View`
     opacity: 0.5;
     font-size: 8px;`;
 
@@ -25,7 +25,7 @@ const Genre = ({genres}) => {
             {genres.map((genre, i) => {
                 return(
                     <GenreContainer key={i.toString()}>
-                        <Text>{genre}</Text>
+                        <GenreText><Text>{genre}</Text></GenreText>
                     </GenreContainer>
                 )
             })}

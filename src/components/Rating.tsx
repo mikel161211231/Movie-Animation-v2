@@ -1,12 +1,14 @@
 import React from 'react'
+
 import styled from 'styled-components/native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Text, View } from 'react-native';
 
 
 const Container = styled.View`
     flex-direction: row;
     margin-vertical: 4px;
-    align-items: center: center;
+    align-items: center;
     justify-content: center;`;
 
 
