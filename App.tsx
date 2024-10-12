@@ -16,6 +16,7 @@ import Genre from './src/components/Genre';
 import { getMovies } from './src/api';
 import * as CONSTANTS from './src/constants/constants';
 import { movies } from './src/assets/data.js';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -44,7 +45,7 @@ function App(): React.JSX.Element {
   return (
     
       <Container>
-    
+      <Backdrop movies={allMmovies} scrollX={scrollX}/>
       <StatusBar />
       <Animated.FlatList
             showsHorizontalScrollIndicator={false}
@@ -115,18 +116,62 @@ const styles = StyleSheet.create({
   },
 });
 
+// Definir componente funcional Backdrop
+const Backdrop = ({movies, scrollX}) => {
+  return (
+    <ContentContainer>
+      <FlatList 
+        data={movies}
+        keyExtractor={item => `${item.key}-back`}
+        removeClippedSubviews={false}
+        contentContainerStyle={{width: CONSTANTS.WIDTH, height: CONSTANTS.BACKDROP_HEIGHT}}
+        renderItem={({item, index}) => {
+          if (!item.backdropPath) {
+            return null;
+          }
+          const translateX = scrollX.interpolate({
+            inputRange: [(index -1) * CONSTANTS.ITEM_SIZE, index*CONSTANTS.ITEM_SIZE],
+            outputRange: [0, CONSTANTS.WIDTH]
+          })
+          return(
+            <BackdropContainer 
+              as={Animated.View}
+              style={{transform:[{translateX: translateX}]}}
+            >
+              <BackdropImage source={{uri:item.backdropPath}} />
+
+            </BackdropContainer>  
+          )
+        }}
+      />
+      <LinearGradient 
+        colors={['rgba(0, 0, 0, 0)', 'black']}
+        style={{
+          height: CONSTANTS.BACKDROP_HEIGHT,
+          width: CONSTANTS.WIDTH,
+          position: 'absolute',
+          bottom: 0,
+        }}
+      />
+    </ContentContainer>
+  )
+};
+
 // Definir los STYLED COMPONENTS
 const Container = styled.View`
-  flex: 1;`;
+  flex: 1;
+  padding-top: 50px;
+  background-color: #000;`;
 
 const PosterContainer = styled.View`
-  width: ${CONSTANTS.ITEM_SIZE}px;`;
+  width: ${CONSTANTS.ITEM_SIZE}px;
+  margin-top: ${CONSTANTS.TOP}px;`;
 
 const Poster = styled.View`
   margin-horizontal: ${CONSTANTS.SPACING}px;
   padding: ${CONSTANTS.SPACING*2}px;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: rgb(255, 255, 255, 0.1);
   border-radius: 10px;`;
 
 const PosterImage = styled.Image`
@@ -137,12 +182,31 @@ const PosterImage = styled.Image`
   margin: 0 0 10px 0;`;
 
 const PosterTitle = styled.Text`
-  font-size: 18px;`;
+  font-size: 18px;
+  color: #FFF;`;
 
 const PosterDescription = styled.Text`
-  font-size: 12px;`;
+  font-size: 12px;
+  color: #FFF;`;
   
 const DummyContainer = styled.View`
   width: ${CONSTANTS.SPACER_ITEM_SIZE}px`;
+
+const ContentContainer = styled.View`
+  position: absolute;
+  width: ${CONSTANTS.WIDTH}px;
+  height: ${CONSTANTS.BACKDROP_HEIGHT}px;`;
+
+const BackdropContainer = styled.View`
+  width: ${CONSTANTS.WIDTH}px;
+  position: absolute;
+  height: ${CONSTANTS.BACKDROP_HEIGHT}px;
+  overflow: hidden;`;
+
+const BackdropImage = styled.Image`
+  position: absolute;
+  width: ${CONSTANTS.WIDTH}px;
+  height: ${CONSTANTS.BACKDROP_HEIGHT}px;`;
+
 
 export default App;
