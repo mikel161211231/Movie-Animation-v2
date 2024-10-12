@@ -6,9 +6,9 @@
  */
 
 // IMPORTS necesarias para renderizar
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import type {PropsWithChildren} from 'react';
-import {FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
+import {Animated, FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View,} from 'react-native';
 import {Colors,} from 'react-native/Libraries/NewAppScreen';
 import styled from 'styled-components/native';
 import Rating from './src/components/Rating';
@@ -27,15 +27,14 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  console.log(movies);
-  
+  const scrollX = useRef(new Animated.Value(0)).current;
   
   return (
     
       <Container>
     
       <StatusBar />
-      <FlatList
+      <Animated.FlatList
             showsHorizontalScrollIndicator={false}
             data={movies} 
             keyExtractor={item => item.key}
@@ -45,10 +44,26 @@ function App(): React.JSX.Element {
             contentContainerStyle={{
               alignItems: 'center'
             }}
-            renderItem={({item}) =>{
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {x: scrollX}}}],
+              {useNativeDriver: true}
+            )}
+            scrollEventThrottle={16}
+            renderItem={({item, index}) =>{
+              const inputRange = [
+                (index -1)* CONSTANTS.ITEM_SIZE,
+                index * CONSTANTS.ITEM_SIZE,
+                (index +1)* CONSTANTS.ITEM_SIZE
+              ]
+
+              const translateY = scrollX.interpolate({
+                inputRange,
+                outputRange: [0, -50, 0]
+              })
+
               return (
                 <PosterContainer>
-                  <Poster>
+                  <Poster as={Animated.View} style={{transform: [{translateY}]}}>
                     <PosterImage source={{uri: item.posterPath}} />
                     <PosterTitle numberOfLines={1}>{item.originalTitle}</PosterTitle>
                     <Rating rating={item.voteAverage} />
