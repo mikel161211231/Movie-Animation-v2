@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Eastwood.ttf",
+      "sha1": "29002c5cd2d57fa5e7671674991524c250fb89f8"
+    },
+    {
+      "path": "src/assets/fonts/handwriting-draft.ttf",
+      "sha1": "54bfd1de935d5278026b3d32115145cf3a15d37c"
+    },
+    {
+      "path": "src/assets/fonts/kaotika-font.ttf",
+      "sha1": "1cfea23dca9999875359ba8250ab0a61d744f1df"
+    }
+  ]
+}

@@ -182,10 +182,12 @@ const PosterImage = styled.Image`
   margin: 0 0 10px 0;`;
 
 const PosterTitle = styled.Text`
-  font-size: 18px;
+  font-family: kaotika-font;
+  font-size: 24px;
   color: #FFF;`;
 
 const PosterDescription = styled.Text`
+  font-family: Eastwood;
   font-size: 12px;
   color: #FFF;`;
   
